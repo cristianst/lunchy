@@ -6,6 +6,9 @@ import { Container, Header, Accordion, Button, List } from 'semantic-ui-react';
 import { menus } from './menus';
 import {  OrdersContext } from './api/OrdersContext';
 
+import firebase from './utils/firebase';
+import { getRestaurants } from './helpers';
+
 const AsiaUnique = (
   <OrdersContext.Consumer>
     {context => (
@@ -105,9 +108,16 @@ class App extends React.PureComponent {
       selectedProducts: filteredProducts
     });
   }
+  componentDidMount(){
+    const db = firebase.firestore();
+    console.log(db);
+    getRestaurants().then(restaurants => {
+      console.log(restaurants)
+    })
+    //const orders = firebase.firestore().collection('/orders');
+  }
 
   getUserName =  () => {
-    
     const urlString = window.location.href;
     const url = new URL(urlString);
     const username= url.searchParams.get("user");  
@@ -129,7 +139,7 @@ class App extends React.PureComponent {
             </Container>
 
             <Container className='welcomeText' textAlign='center'>
-              <p>Hey {this.getUserName()}<span aria-label='wave' role='img'>👋</span>, what u wanna eat today? <br/>
+              <p>Hey<span aria-label='wave' role='img'>👋</span>, what u wanna eat today? <br/>
               </p>
               <p>Need inspiration? Check what your colleagues ordered!</p>
             </Container>
