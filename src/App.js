@@ -1,150 +1,48 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './App.css';
 
-import { Container, Header, Accordion, Button, List } from 'semantic-ui-react';
+import {
+ Container, Header, Accordion,
+} from 'semantic-ui-react';
 
-import { menus } from './menus';
-import {  OrdersContext } from './api/OrdersContext';
+import { categories } from './data';
 
-const AsiaUnique = (
-  <OrdersContext.Consumer>
-    {context => (
-      <List divided verticalAlign='middle'>
-        {menus.AsiaUnique.dishes.map(dish => (
-          <List.Item key={dish._id}>
-            <List.Content floated='right'>
-              {context.selectedProducts.find(product => product._id === dish._id) ?
-                <Button onClick={() => context.onRemoveProduct(dish)}>Remove</Button>
-              :
-                <Button onClick={() => context.onSelectProduct(dish)}>Add</Button>
-              }     
-            </List.Content>
-            <List.Content><span>{dish.name} - {dish.price}</span></List.Content>
-          </List.Item>
-        ))}
-      </List>
-    )}
+import { withOrdersContext } from './context/withOrdersContext';
 
-  </OrdersContext.Consumer>
-);
-const AsiaQuick = (<div>Asia Quick</div>);
-
-const Pizza = (<div>pizzaa </div>);
-
-const AsiaRestaurants = [{
-  key: 'asiaunique',
-  title: 'Asia Unique',
-  content: {
-    content: AsiaUnique
-  }
-}, {
-  key: 'asiaquick',
-  title: 'Asia Quick',
-  content: {
-    content: AsiaQuick
-
-  }
-}];
-
-const AsianFood = (
-  <div>
-    <p>We recommend these restaurant <span aria-label='ok-hand' role='img'>👌</span></p>
-    <Accordion.Accordion panels={AsiaRestaurants} />
-  </div>
-)
-/*const AsianFood2 = () => {
+const App = (props) => {
+  console.log(props);
   return (
-    <div>
-    <p>We recommend these restaurants <span aria-label='ok-hand' role='img'>👌</span></p>
-    <Accordion.Accordion panels={AsiaRestaurants} />
-  </div>
-  )
-};*/
+    <div className="App">
+      <Container>
+        <Container className="mainheader" textAlign="center">
+          <Header>lunchy</Header>
+        </Container>
 
-const categories = [{ 
-  key: 'asia', 
-  title: 'Asian Food 🍜', 
-  content: { 
-    content: AsianFood,
-    foo: 'foo'
-  } 
-},{ 
-  key: 'pizza', 
-  title: 'Pizza 🍕', 
-  content: { 
-    content: Pizza 
-  }
-}];
+        <Container className="welcomeText" textAlign="center">
+          <p>
+            Hey
+            {' '}
+            {/* {getUserName()} */}
+            <span aria-label="wave" role="img">
+              👋
+            </span>
+            , what u wanna eat today?
+            <br />
+          </p>
+          <p>Need inspiration? Check what your colleagues ordered!</p>
+        </Container>
 
+        <Container className="mainContent" textAlign="left">
+          <Accordion panels={categories} styled />
+        </Container>
+      </Container>
+    </div>
+  );
+};
 
-class App extends React.PureComponent {
-  state = {
-    selectedProducts: []
-  }
-  handleSelectProduct = (product) => {
-    console.log('add');
-    this.setState(prevState => {
-      const selectedProducts = [
-        ...prevState.selectedProducts,
-        product
-      ];
+App.propTypes = {
+  getUserName: PropTypes.func.isRequired,
+};
 
-      return {
-        selectedProducts
-      };
-    });
-  }
-  handleRemoveProduct = (product) => {
-    console.log('remove');
-    const { selectedProducts } = this.state;
-    const filteredProducts = selectedProducts.filter(selectedProduct => {
-      return selectedProduct._id !== product._id 
-    });
-
-    this.setState({
-      selectedProducts: filteredProducts
-    });
-  }
-
-  getUserName =  () => {
-    
-    const urlString = window.location.href;
-    const url = new URL(urlString);
-    const username= url.searchParams.get("user");  
-    console.log(username);
-    return username;
-  }
-  render(){
-    const { selectedProducts } = this.state;
-    return (
-      <div className='App'>
-      <OrdersContext.Provider value={{
-        selectedProducts,
-        onSelectProduct: this.handleSelectProduct,
-        onRemoveProduct: this.handleRemoveProduct
-      }}>
-          <Container>
-            <Container className='mainheader' textAlign='center'>
-              <Header>lunchy</Header>
-            </Container>
-
-            <Container className='welcomeText' textAlign='center'>
-              <p>Hey {this.getUserName()}<span aria-label='wave' role='img'>👋</span>, what u wanna eat today? <br/>
-              </p>
-              <p>Need inspiration? Check what your colleagues ordered!</p>
-            </Container>
-
-            <Container className='mainContent' textAlign='left'>
-              <Accordion 
-                panels={categories} 
-                styled 
-              />
-            </Container>
-          </Container>
-      </OrdersContext.Provider>
-      </div>
-    )
-  }
-}
-
-export default App;
+export default withOrdersContext(App);
