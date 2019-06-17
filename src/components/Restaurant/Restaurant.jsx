@@ -8,19 +8,17 @@ export const Restaurant = ({
   <List divided verticalAlign="middle">
     {menu.map(dish => (
       <List.Item key={dish._id}>
-        <List.Content>
-          {selectedDishes
-            && selectedDishes.find(selectedDish =>
-              (selectedDish._id === dish._id ? (
-                <Button onClick={() => onRemoveDish(dish)}>Remove</Button>
-              ) : (
-                <Button onClick={() => onSelectDish(dish)}>Add</Button>
-              )))}
+        <List.Content floated="right">
+          {selectedDishes.find(selectedDish => selectedDish._id === dish._id) ? (
+            <Button onClick={() => onSelectDish(dish)}>Remove</Button>
+          ) : (
+            <Button onClick={() => onRemoveDish(dish)}>Add</Button>
+          )}
         </List.Content>
         <List.Content>
           <span>
             {dish.name}
-            {' '}
+-
             {dish.price}
           </span>
         </List.Content>

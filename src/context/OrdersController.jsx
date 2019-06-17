@@ -5,9 +5,9 @@ import { OrdersProvider } from './Orders';
 
 export class OrdersController extends React.Component {
   state = {
-    selectedProducts: [],
+    selectedDishes: [],
     availableRestaurants: [],
-    categories: [],
+    categories: []
   };
 
   componentDidMount() {
@@ -67,30 +67,28 @@ export class OrdersController extends React.Component {
         },
         {
           name: 'pizza',
-          title: 'Pizza 🍕',
+          title: 'Pizza 🍕'
         }
-      ],
+      ]
     });
   };
 
-  handleSelectProduct = (product) => {
+  handleSelectProduct = (dish) => {
     this.setState((prevState) => {
-      const selectedProducts = [...prevState.selectedProducts, product];
+      const selectedDishes = [...prevState.selectedDishes, dish];
 
       return {
-        selectedProducts
+        selectedDishes
       };
     });
   };
 
-  handleRemoveProduct = (product) => {
-    const { selectedProducts } = this.state;
-    const filteredProducts = selectedProducts.filter(
-      selectedProduct => selectedProduct._id !== product._id
-    );
+  handleRemoveProduct = (dish) => {
+    const { selectedDishes } = this.state;
+    const filteredDishes = selectedDishes.filter(selectedDish => selectedDish._id !== dish._id);
 
     this.setState({
-      selectedProducts: filteredProducts
+      selectedDishes: filteredDishes
     });
   };
 
@@ -102,13 +100,11 @@ export class OrdersController extends React.Component {
   };
 
   render() {
-    const {
- selectedProducts, categories, availableRestaurants
-} = this.state;
+    const { selectedDishes, categories, availableRestaurants } = this.state;
     const { children } = this.props;
     const { handleSelectProduct, handleRemoveProduct, getUserName } = this;
     const contextValue = {
-      selectedProducts,
+      selectedDishes,
       getUserName,
       onSelectDish: handleSelectProduct,
       onRemoveDish: handleRemoveProduct,

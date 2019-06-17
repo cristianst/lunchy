@@ -26,6 +26,7 @@ class RestaurantController extends React.PureComponent {
 
   render() {
     const { restaurants, selectedDishes, activeRestaurant } = this.state;
+    const { onSelectDish, onRemoveDish } = this.props;
     return restaurants.map((restaurant, index) => (
       <Accordion>
         <Accordion.Title
@@ -36,7 +37,12 @@ class RestaurantController extends React.PureComponent {
           {restaurant.title}
         </Accordion.Title>
         <Accordion.Content active={activeRestaurant === index}>
-          <Restaurant selectedDishes={selectedDishes} menu={restaurant.menu} />
+          <Restaurant
+            selectedDishes={selectedDishes}
+            onSelectDish={onSelectDish}
+            onRemoveDish={onRemoveDish}
+            menu={restaurant.menu}
+          />
         </Accordion.Content>
       </Accordion>
     ));
