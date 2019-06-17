@@ -74,7 +74,6 @@ export class OrdersController extends React.Component {
   };
 
   handleSelectProduct = (dish) => {
-    console.log(dish)
     this.setState((prevState) => {
       const selectedDishes = [...prevState.selectedDishes, dish];
 
@@ -86,7 +85,7 @@ export class OrdersController extends React.Component {
 
   handleRemoveProduct = (dish) => {
     const { selectedDishes } = this.state;
-    console.log(dish);
+
     const filteredDishes = selectedDishes.filter(selectedDish => selectedDish._id !== dish._id);
 
     this.setState({
