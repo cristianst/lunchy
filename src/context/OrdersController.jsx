@@ -56,7 +56,8 @@ export class OrdersController extends React.Component {
         },
         {
           category: 'asian',
-          title: 'Asia Quick'
+          title: 'Asia Quick',
+          key: 'asiaquick'
         }
       ],
       categories: [

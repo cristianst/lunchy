@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -6,7 +7,7 @@ import {
 import { withOrdersContext } from './context/withOrdersContext';
 
 import './App.css';
-import { Restaurant } from './components/restaurants';
+import { CategoryController } from './components/Category';
 
 class App extends React.PureComponent {
   state = {
@@ -22,22 +23,8 @@ class App extends React.PureComponent {
     });
   };
 
-  renderRestaurantsForCategory = (category) => {
-    const { availableRestaurants } = this.props.context;
-
-    const restaurants = availableRestaurants.filter(restaurant => restaurant.category === category);
-
-    return restaurants.map(restaurant => (
-      <Restaurant
-        menu={restaurant.menu}
-        onSelectDish={this.props.context.onSelectDish}
-        onRemoveDish={this.props.context.onRemoveDish}
-      />
-    ));
-  };
-
   render() {
-    const { categories } = this.props.context;
+    const { categories, availableRestaurants } = this.props;
     const { activeAccordion } = this.state;
     return (
       <div className="App">
@@ -61,21 +48,31 @@ class App extends React.PureComponent {
           </Container>
 
           <Container className="mainContent" textAlign="left">
-            {categories.map((category, index) => (
-              <Accordion key={category.name}>
-                <Accordion.Title
-                  active={activeAccordion === index}
-                  onClick={() => this.handleDropdownClick(index)}
-                >
-                  {category.title}
-                  {' '}
-                  <Icon name="dropdown" />
-                </Accordion.Title>
-                <Accordion.Content active={activeAccordion === index}>
-                  {this.renderRestaurantsForCategory(category.name)}
-                </Accordion.Content>
-              </Accordion>
-            ))}
+            {categories.map((category, index) => {
+              const restaurantsForCategory = availableRestaurants.filter(
+                restaurant => restaurant.category === category.name
+              );
+              return (
+                <Accordion key={category.name}>
+                  <Accordion.Title
+                    active={activeAccordion === index}
+                    onClick={() => this.handleDropdownClick(index)}
+                  >
+                    {category.title}
+                    {' '}
+                    <Icon name="dropdown" />
+                  </Accordion.Title>
+                  <Accordion.Content active={activeAccordion === index}>
+                    {restaurantsForCategory.length > 0 && (
+                      <CategoryController
+                        name={category.title}
+                        restaurants={restaurantsForCategory}
+                      />
+                    )}
+                  </Accordion.Content>
+                </Accordion>
+              );
+            })}
           </Container>
         </Container>
       </div>
@@ -84,10 +81,8 @@ class App extends React.PureComponent {
 }
 
 App.propTypes = {
-  context: PropTypes.shape({
-    availableRestaurants: PropTypes.array.isRequired,
-    categories: PropTypes.array.isRequired
-  }).isRequired
+  availableRestaurants: PropTypes.shape([]).isRequired,
+  categories: PropTypes.shape([]).isRequired
 };
 
 export default withOrdersContext(App);
