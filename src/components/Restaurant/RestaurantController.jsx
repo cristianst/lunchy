@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Accordion, Icon } from 'semantic-ui-react';
 import { withOrdersContext } from '../../context/withOrdersContext';
 import { Restaurant } from './Restaurant';
@@ -12,6 +13,15 @@ class RestaurantController extends React.PureComponent {
       selectedDishes,
       activeRestaurant: null
     };
+  }
+
+  componentDidUpdate() {
+    this.refreshSelectedProductsList();
+  }
+
+  refreshSelectedProductsList = () => {
+    const { selectedDishes } = this.props;
+    this.setState({ selectedDishes });
   }
 
   handleSelectRestaurantClick = (index) => {
@@ -28,7 +38,7 @@ class RestaurantController extends React.PureComponent {
     const { restaurants, selectedDishes, activeRestaurant } = this.state;
     const { onSelectDish, onRemoveDish } = this.props;
     return restaurants.map((restaurant, index) => (
-      <Accordion>
+      <Accordion id={restaurant.title}>
         <Accordion.Title
           active={activeRestaurant === index}
           onClick={() => this.handleSelectRestaurantClick(index)}
@@ -48,5 +58,12 @@ class RestaurantController extends React.PureComponent {
     ));
   }
 }
+
+RestaurantController.propTypes = {
+  onSelectDish: PropTypes.func.isRequired,
+  onRemoveDish: PropTypes.func.isRequired,
+  restaurants: PropTypes.array.isRequired,
+  selectedDishes: PropTypes.array.isRequired,
+};
 
 export default withOrdersContext(RestaurantController);

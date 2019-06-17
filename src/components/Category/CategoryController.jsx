@@ -32,7 +32,7 @@ class CategoryController extends React.PureComponent {
 
 CategoryController.propTypes = {
   name: PropTypes.string.isRequired,
-  restaurants: PropTypes.shape([]).isRequired
+  restaurants: PropTypes.array.isRequired
 };
 
 export default withOrdersContext(CategoryController);

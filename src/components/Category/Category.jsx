@@ -20,7 +20,7 @@ const Category = ({ name, restaurants }) => (
 
 Category.propTypes = {
   name: PropTypes.string.isRequired,
-  restaurants: PropTypes.shape([]).isRequired
+  restaurants: PropTypes.array.isRequired
 };
 
 Category.displayName = 'Category';

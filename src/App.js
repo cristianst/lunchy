@@ -81,8 +81,8 @@ class App extends React.PureComponent {
 }
 
 App.propTypes = {
-  availableRestaurants: PropTypes.shape([]).isRequired,
-  categories: PropTypes.shape([]).isRequired
+  availableRestaurants: PropTypes.array.isRequired,
+  categories: PropTypes.array.isRequired
 };
 
 export default withOrdersContext(App);

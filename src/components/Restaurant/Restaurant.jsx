@@ -10,9 +10,9 @@ export const Restaurant = ({
       <List.Item key={dish._id}>
         <List.Content floated="right">
           {selectedDishes.find(selectedDish => selectedDish._id === dish._id) ? (
-            <Button onClick={() => onSelectDish(dish)}>Remove</Button>
+            <Button onClick={() => onRemoveDish(dish)}>Remove</Button>
           ) : (
-            <Button onClick={() => onRemoveDish(dish)}>Add</Button>
+            <Button onClick={() => onSelectDish(dish)}>Add</Button>
           )}
         </List.Content>
         <List.Content>
@@ -28,8 +28,8 @@ export const Restaurant = ({
 );
 
 Restaurant.propTypes = {
-  menu: PropTypes.shape([{}]),
-  selectedDishes: PropTypes.func.isRequired,
+  menu: PropTypes.array,
+  selectedDishes: PropTypes.array.isRequired,
   onRemoveDish: PropTypes.func.isRequired,
   onSelectDish: PropTypes.func.isRequired
 };
